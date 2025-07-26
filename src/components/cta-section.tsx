@@ -12,7 +12,7 @@ const trustLogos = ["Shopify", "WooCommerce", "Magento", "BigCommerce", "Stripe"
 
 export function CTASection() {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-12 md:py-24 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-electric-blue/10 via-background to-hot-pink/10">
         <div className="absolute top-20 left-20 w-40 h-40 gradient-bg-vibrant rounded-full blur-3xl opacity-15 animate-float" />
@@ -25,14 +25,14 @@ export function CTASection() {
 
       <div className="container px-4 relative z-10">
         <Card className="max-w-5xl mx-auto glass-effect border-2 border-white/20 shadow-2xl hover:shadow-electric-blue/20 transition-all duration-500 animate-fade-in">
-          <CardContent className="p-12 lg:p-16 text-center">
+          <CardContent className="pt-8 md:p-12 lg:p-16 text-center">
             <div className="space-y-10">
               <div className="space-y-6">
                 <Badge
                   variant="secondary"
                   className="gradient-bg-vibrant text-white border-0 text-lg px-6 py-2 animate-bounce-in"
                 >
-                  <Sparkles className="w-4 h-4 mr-2" />
+                  <Sparkles className="md:w-4 md:h-4 mr-1 md:mr-2" />
                   Ready to dominate your market?
                 </Badge>
 
@@ -97,7 +97,7 @@ export function CTASection() {
               </div>
 
               {/* Trust Indicators with Animation */}
-              <div className="pt-12 border-t border-white/10 animate-fade-in" style={{ animationDelay: "0.9s" }}>
+              <div className="pt-1 md:pt-12 border-t border-white/10 animate-fade-in" style={{ animationDelay: "0.9s" }}>
                 <p className="text-sm text-muted-foreground mb-6">Trusted by leading e-commerce brands worldwide</p>
                 <div className="flex justify-center items-center gap-8 flex-wrap opacity-60">
                   {trustLogos.map((logo, index) => (
@@ -115,19 +115,19 @@ export function CTASection() {
               {/* Final Stats */}
               <div className="grid grid-cols-3 gap-8 pt-8 animate-slide-up" style={{ animationDelay: "1.2s" }}>
                 <div className="text-center group">
-                  <div className="text-3xl font-bold gradient-text group-hover:scale-110 transition-transform duration-300">
+                  <div className="text-xl md:text-3xl font-bold gradient-text group-hover:scale-110 transition-transform duration-300">
                     2 min
                   </div>
                   <div className="text-sm text-muted-foreground">Setup Time</div>
                 </div>
                 <div className="text-center group">
-                  <div className="text-3xl font-bold gradient-text group-hover:scale-110 transition-transform duration-300">
+                  <div className="text-xl md:text-3xl font-bold gradient-text group-hover:scale-110 transition-transform duration-300">
                     47%
                   </div>
                   <div className="text-sm text-muted-foreground">Avg Growth</div>
                 </div>
                 <div className="text-center group">
-                  <div className="text-3xl font-bold gradient-text group-hover:scale-110 transition-transform duration-300">
+                  <div className="text-xl md:text-3xl font-bold gradient-text group-hover:scale-110 transition-transform duration-300">
                     24/7
                   </div>
                   <div className="text-sm text-muted-foreground">Support</div>

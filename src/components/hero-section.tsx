@@ -8,7 +8,7 @@ import Image from "next/image"
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-electric-blue/5 to-hot-pink/5">
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
@@ -36,7 +36,7 @@ export function HeroSection() {
         />
       </div>
 
-      <div className="container relative z-10 px-4 py-32">
+      <div className="container relative z-10 px-4 py-16 md:pt-20 mb:pb-0">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
           <div className="space-y-8 animate-fade-in">
@@ -151,7 +151,7 @@ export function HeroSection() {
                     />
                   </div>
                   <Image
-                    src="/placeholder.svg?height=400&width=600&text=Analytics+Dashboard"
+                    src="/ecomlytics-pro-demo.png?height=400&width=600&text=Analytics+Dashboard"
                     alt="Ecomlytics Pro Dashboard"
                     width={600}
                     height={400}
@@ -162,7 +162,7 @@ export function HeroSection() {
 
               {/* Floating Metrics Cards */}
               <div
-                className="absolute -left-12 top-1/4 glass-effect rounded-xl shadow-xl p-4 animate-slide-in border border-white/20"
+                className="absolute -left-4 md:-left-12 top-1/4 glass-effect rounded-xl shadow-xl p-4 animate-slide-in border border-white/20"
                 style={{ animationDelay: "0.8s" }}
               >
                 <div className="text-2xl font-bold text-neon-green">+34.7%</div>
@@ -173,7 +173,7 @@ export function HeroSection() {
               </div>
 
               <div
-                className="absolute -right-12 bottom-1/4 glass-effect rounded-xl shadow-xl p-4 animate-slide-in border border-white/20"
+                className="absolute -right-4 md:-right-12 bottom-1/4 glass-effect rounded-xl shadow-xl p-4 animate-slide-in border border-white/20"
                 style={{ animationDelay: "1.2s" }}
               >
                 <div className="text-2xl font-bold text-hot-pink">$127.5K</div>

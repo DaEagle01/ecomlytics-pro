@@ -67,21 +67,30 @@ export function AppHeader({ onMenuClick }: { onMenuClick?: () => void }) {
     <header
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
-        isScrolled ? "bg-background/80 backdrop-blur-lg border-b shadow-lg" : "bg-transparent"
+        isScrolled
+          ? "bg-background/80 backdrop-blur-lg border-b shadow-lg"
+          : "bg-transparent"
       )}
     >
-      <div className="container flex h-16 items-center justify-between">
+      <div className="px-4 md:px-8 md:container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           {onMenuClick && (
-            <Button variant="ghost" size="icon" className="md:hidden" onClick={onMenuClick}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={onMenuClick}
+            >
               <Menu className="h-5 w-5" />
             </Button>
           )}
-          <Link href='/' className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 gradient-bg-vibrant rounded-lg flex items-center justify-center animate-pulse-glow">
               <BarChart3 className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-xl gradient-text">Ecomlytics Pro</span>
+            <span className="font-bold text-xl gradient-text">
+              Ecomlytics Pro
+            </span>
           </Link>
           <Badge
             variant="secondary"
@@ -93,10 +102,16 @@ export function AppHeader({ onMenuClick }: { onMenuClick?: () => void }) {
         </div>
 
         <div className="hidden md:flex items-center gap-6">
-          <Link href="#features" className="nav-link-effect text-sm font-medium">
+          <Link
+            href="#features"
+            className="nav-link-effect text-sm font-medium"
+          >
             Features
           </Link>
-          <Link href="#testimonials" className="nav-link-effect text-sm font-medium">
+          <Link
+            href="#testimonials"
+            className="nav-link-effect text-sm font-medium"
+          >
             Testimonials
           </Link>
           <Link href="/pricing" className="nav-link-effect text-sm font-medium">
@@ -142,19 +157,29 @@ export function AppHeader({ onMenuClick }: { onMenuClick?: () => void }) {
                   <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {notifications.map((n) => (
-                    <DropdownMenuItem key={n.id} className="flex flex-col items-start p-3">
+                    <DropdownMenuItem
+                      key={n.id}
+                      className="flex flex-col items-start p-3"
+                    >
                       <div className="flex w-full items-start justify-between">
                         <div className="flex-1">
                           <p className="text-sm font-medium">{n.title}</p>
-                          <p className="text-xs text-muted-foreground">{n.time}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {n.time}
+                          </p>
                         </div>
-                        {n.unread && <div className="h-2 w-2 rounded-full bg-primary" />}
+                        {n.unread && (
+                          <div className="h-2 w-2 rounded-full bg-primary" />
+                        )}
                       </div>
                     </DropdownMenuItem>
                   ))}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard/notifications" className="w-full text-center">
+                    <Link
+                      href="/dashboard/notifications"
+                      className="w-full text-center"
+                    >
                       View all notifications
                     </Link>
                   </DropdownMenuItem>
@@ -163,11 +188,20 @@ export function AppHeader({ onMenuClick }: { onMenuClick?: () => void }) {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full"
+                  >
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name} />
+                      <AvatarImage
+                        src={user?.avatar || "/placeholder.svg"}
+                        alt={user?.name}
+                      />
                       <AvatarFallback className="bg-primary text-primary-foreground">
-                        {user?.name?.split(" ").map((n) => n[0]).join("") || "U"}
+                        {user?.name
+                          ?.split(" ")
+                          .map((n) => n[0])
+                          .join("") || "U"}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -175,13 +209,19 @@ export function AppHeader({ onMenuClick }: { onMenuClick?: () => void }) {
                 <DropdownMenuContent className="w-56" align="end">
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user?.name}</p>
-                      <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                      <p className="text-sm font-medium leading-none">
+                        {user?.name}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user?.email}
+                      </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
 
-                  <DropdownMenuLabel className="text-xs text-muted-foreground">Switch Role</DropdownMenuLabel>
+                  <DropdownMenuLabel className="text-xs text-muted-foreground">
+                    Switch Role
+                  </DropdownMenuLabel>
                   {Object.entries(roleConfig).map(([role, config]) => {
                     const Icon = config.icon;
                     const isActive = user?.role === role;
@@ -189,7 +229,10 @@ export function AppHeader({ onMenuClick }: { onMenuClick?: () => void }) {
                       <DropdownMenuItem
                         key={role}
                         onClick={() => handleRoleChange(role as UserRole)}
-                        className={cn("cursor-pointer", isActive && "bg-accent")}
+                        className={cn(
+                          "cursor-pointer",
+                          isActive && "bg-accent"
+                        )}
                       >
                         <Icon className={cn("mr-2 h-4 w-4", config.color)} />
                         <span>{config.label}</span>
@@ -227,7 +270,7 @@ export function AppHeader({ onMenuClick }: { onMenuClick?: () => void }) {
             </>
           ) : (
             <>
-              <Button variant="ghost" asChild>
+              <Button variant="ghost" asChild className="hidden sm:block">
                 <Link href="/login">Sign In</Link>
               </Button>
               <Button className="gradient-bg-primary" asChild>
@@ -235,31 +278,34 @@ export function AppHeader({ onMenuClick }: { onMenuClick?: () => void }) {
               </Button>
             </>
           )}
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
         </div>
       </div>
 
       {isMenuOpen && (
         <div className="md:hidden border-t glass-effect animate-slide-up">
           <nav className="container py-4 space-y-4">
-            <Link href="#features" className="block text-sm font-medium hover:text-electric-blue">
+            <Link
+              href="#features"
+              className="block text-sm font-medium hover:text-electric-blue"
+            >
               Features
             </Link>
-            <Link href="#testimonials" className="block text-sm font-medium hover:text-hot-pink">
+            <Link
+              href="#testimonials"
+              className="block text-sm font-medium hover:text-hot-pink"
+            >
               Testimonials
             </Link>
-            <Link href="/pricing" className="block text-sm font-medium hover:text-purple-magic">
+            <Link
+              href="/pricing"
+              className="block text-sm font-medium hover:text-purple-magic"
+            >
               Pricing
             </Link>
-            <Link href="/docs" className="block text-sm font-medium hover:text-neon-green">
+            <Link
+              href="/docs"
+              className="block text-sm font-medium hover:text-neon-green"
+            >
               Docs
             </Link>
             <div className="flex flex-col gap-2 pt-4 border-t">
