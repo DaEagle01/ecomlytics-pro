@@ -1,13 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { BarChart3, Bell, Search, User, Settings, LogOut, Shield, Eye, CreditCard, Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  BarChart3,
+  Bell,
+  Search,
+  User,
+  Settings,
+  LogOut,
+  Shield,
+  Eye,
+  CreditCard,
+  Menu,
+  X,
+  Sparkles,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,82 +28,86 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { useAuth, type UserRole } from "@/lib/auth-context"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/dropdown-menu";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { useAuth, type UserRole } from "@/lib/auth-context";
+import { cn } from "@/lib/utils";
 
 const roleConfig = {
   admin: { label: "Admin", icon: Shield, color: "text-red-600" },
   manager: { label: "Manager", icon: User, color: "text-blue-600" },
   viewer: { label: "Viewer", icon: Eye, color: "text-gray-600" },
-}
+};
 
 const notifications = [
   { id: 1, title: "New order received", time: "2m ago", unread: true },
   { id: 2, title: "Payment processed", time: "5m ago", unread: true },
   { id: 3, title: "Weekly report ready", time: "1h ago", unread: false },
-]
+];
 
-interface AppHeaderProps {
-  onMenuClick?: () => void
-}
+export function AppHeader({ onMenuClick }: { onMenuClick?: () => void }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { user, isAuthenticated, logout, updateRole } = useAuth();
+  const pathname = usePathname();
+  const unreadCount = notifications.filter((n) => n.unread).length;
+  const [searchQuery, setSearchQuery] = useState("");
 
-export function AppHeader({ onMenuClick }: AppHeaderProps) {
-  const { user, isAuthenticated, logout, updateRole } = useAuth()
-  const pathname = usePathname()
-  const [searchQuery, setSearchQuery] = useState("")
-  const unreadCount = notifications.filter((n) => n.unread).length
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const getPageTitle = () => {
-    const routes: Record<string, string> = {
-      "/dashboard": "Dashboard",
-      "/dashboard/sales": "Sales Analytics",
-      "/dashboard/products": "Product Performance",
-      "/dashboard/customers": "Customer Insights",
-      "/dashboard/ads": "Ad Campaigns",
-      "/dashboard/reports": "Reports",
-      "/dashboard/settings": "Settings",
-      "/dashboard/billing": "Billing",
-      "/dashboard/profile": "Profile",
-      "/dashboard/notifications": "Notifications",
-      "/dashboard/tools": "Tools",
-      "/dashboard/overview": "App Overview",
-    }
-    return routes[pathname] || "Ecomlytics Pro"
-  }
-
-  const handleRoleChange = (role: UserRole) => {
-    updateRole(role)
-  }
+  const handleRoleChange = (role: UserRole) => updateRole(role);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center px-4">
-        {/* Left: Logo + Menu Button */}
-        <div className="flex items-center gap-4">
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        isScrolled ? "bg-background/80 backdrop-blur-lg border-b shadow-lg" : "bg-transparent"
+      )}
+    >
+      <div className="container flex h-16 items-center justify-between">
+        <div className="flex items-center gap-2">
           {onMenuClick && (
             <Button variant="ghost" size="icon" className="md:hidden" onClick={onMenuClick}>
               <Menu className="h-5 w-5" />
             </Button>
           )}
-
-          <Link href={isAuthenticated ? "/dashboard" : "/"} className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-chart-2 rounded-lg flex items-center justify-center">
+          <Link href='/' className="flex items-center gap-2">
+            <div className="w-8 h-8 gradient-bg-vibrant rounded-lg flex items-center justify-center animate-pulse-glow">
               <BarChart3 className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold gradient-text hidden sm:block">Ecomlytics Pro</span>
+            <span className="font-bold text-xl gradient-text">Ecomlytics Pro</span>
+          </Link>
+          <Badge
+            variant="secondary"
+            className="ml-2 hidden sm:inline-flex gradient-bg-cool text-white border-0"
+          >
+            <Sparkles className="w-3 h-3 mr-1" />
+            AI-Powered
+          </Badge>
+        </div>
+
+        <div className="hidden md:flex items-center gap-6">
+          <Link href="#features" className="nav-link-effect text-sm font-medium">
+            Features
+          </Link>
+          <Link href="#testimonials" className="nav-link-effect text-sm font-medium">
+            Testimonials
+          </Link>
+          <Link href="/pricing" className="nav-link-effect text-sm font-medium">
+            Pricing
+          </Link>
+          <Link href="/docs" className="nav-link-effect text-sm font-medium">
+            Docs
           </Link>
         </div>
 
-        {/* Center: Page Title */}
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-foreground hidden md:block">{getPageTitle()}</h1>
-        </div>
-
-        {/* Right: Actions */}
-        <div className="flex items-center gap-2">
-          {/* Search - only show on dashboard pages */}
+        <div className="flex items-center gap-4">
           {isAuthenticated && pathname.startsWith("/dashboard") && (
             <div className="relative hidden lg:block">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -103,9 +120,10 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
             </div>
           )}
 
+          <ThemeToggle />
+
           {isAuthenticated ? (
             <>
-              {/* Notifications */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="relative">
@@ -123,14 +141,14 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
                 <DropdownMenuContent align="end" className="w-80">
                   <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {notifications.map((notification) => (
-                    <DropdownMenuItem key={notification.id} className="flex flex-col items-start p-3">
+                  {notifications.map((n) => (
+                    <DropdownMenuItem key={n.id} className="flex flex-col items-start p-3">
                       <div className="flex w-full items-start justify-between">
                         <div className="flex-1">
-                          <p className="text-sm font-medium">{notification.title}</p>
-                          <p className="text-xs text-muted-foreground">{notification.time}</p>
+                          <p className="text-sm font-medium">{n.title}</p>
+                          <p className="text-xs text-muted-foreground">{n.time}</p>
                         </div>
-                        {notification.unread && <div className="h-2 w-2 rounded-full bg-primary" />}
+                        {n.unread && <div className="h-2 w-2 rounded-full bg-primary" />}
                       </div>
                     </DropdownMenuItem>
                   ))}
@@ -143,20 +161,13 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {/* Theme Toggle */}
-              <ThemeToggle />
-
-              {/* User Menu */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                     <Avatar className="h-10 w-10">
                       <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name} />
                       <AvatarFallback className="bg-primary text-primary-foreground">
-                        {user?.name
-                          ?.split(" ")
-                          .map((n) => n[0])
-                          .join("") || "U"}
+                        {user?.name?.split(" ").map((n) => n[0]).join("") || "U"}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -170,11 +181,10 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
 
-                  {/* Role Switcher */}
                   <DropdownMenuLabel className="text-xs text-muted-foreground">Switch Role</DropdownMenuLabel>
                   {Object.entries(roleConfig).map(([role, config]) => {
-                    const Icon = config.icon
-                    const isActive = user?.role === role
+                    const Icon = config.icon;
+                    const isActive = user?.role === role;
                     return (
                       <DropdownMenuItem
                         key={role}
@@ -189,52 +199,80 @@ export function AppHeader({ onMenuClick }: AppHeaderProps) {
                           </Badge>
                         )}
                       </DropdownMenuItem>
-                    )
+                    );
                   })}
 
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard/profile">
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
+                      <User className="mr-2 h-4 w-4" /> Profile
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard/billing">
-                      <CreditCard className="mr-2 h-4 w-4" />
-                      Billing
+                      <CreditCard className="mr-2 h-4 w-4" /> Billing
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/dashboard/settings">
-                      <Settings className="mr-2 h-4 w-4" />
-                      Settings
+                      <Settings className="mr-2 h-4 w-4" /> Settings
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={logout} className="text-red-600">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Log out
+                    <LogOut className="mr-2 h-4 w-4" /> Log out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </>
           ) : (
             <>
-              <ThemeToggle />
-              <Link href="/pricing">
-                <Button variant="ghost">Pricing</Button>
-              </Link>
-              <Link href="/login">
-                <Button variant="ghost">Sign In</Button>
-              </Link>
-              <Link href="/signup">
-                <Button>Get Started</Button>
-              </Link>
+              <Button variant="ghost" asChild>
+                <Link href="/login">Sign In</Link>
+              </Button>
+              <Button className="gradient-bg-primary" asChild>
+                <Link href="/signup">Start Free Trial</Link>
+              </Button>
             </>
           )}
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
       </div>
+
+      {isMenuOpen && (
+        <div className="md:hidden border-t glass-effect animate-slide-up">
+          <nav className="container py-4 space-y-4">
+            <Link href="#features" className="block text-sm font-medium hover:text-electric-blue">
+              Features
+            </Link>
+            <Link href="#testimonials" className="block text-sm font-medium hover:text-hot-pink">
+              Testimonials
+            </Link>
+            <Link href="/pricing" className="block text-sm font-medium hover:text-purple-magic">
+              Pricing
+            </Link>
+            <Link href="/docs" className="block text-sm font-medium hover:text-neon-green">
+              Docs
+            </Link>
+            <div className="flex flex-col gap-2 pt-4 border-t">
+              <Button variant="ghost" className="justify-start" asChild>
+                <Link href="/login">Sign In</Link>
+              </Button>
+              <Button className="gradient-bg-primary" asChild>
+                <Link href="/signup">Start Free Trial</Link>
+              </Button>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
-  )
+  );
 }

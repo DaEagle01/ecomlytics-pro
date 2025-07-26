@@ -152,7 +152,7 @@ export default function LoginPage() {
           <EnhancedCardContent className="p-4 text-center">
             <p className="text-sm font-medium mb-2">Demo Credentials</p>
             <div className="text-xs text-muted-foreground space-y-1">
-              <p>Email: demo@ecomlytics_pro.com</p>
+              <p>Email: demo@ecomlyticsPro.com</p>
               <p>Password: demo123</p>
             </div>
           </EnhancedCardContent>
